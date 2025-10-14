@@ -19,7 +19,20 @@
             </button>
             <h1>Settings</h1>
         </div>
-    </header> 
+        <div>
+            <button id="donate-btn">ðŸ¤ Donate</button>
+        </div>
+    </header>
+    <dialog id="donation-dialog">
+        <div class="head">
+            <h1>Choose your donation method</h1>
+            <button id="close-donation-btn">âœ•</button>
+        </div>
+        <div class="main-section">
+            <button id="donate-btn-paypal">Donate via PayPal</button>
+            <button id="donate-btn-patreon">Become a Patreon</button>
+        </div>
+    </dialog>
     <div id="main-container">
         <nav id="main-nav">
             <ul>
@@ -32,7 +45,7 @@
                 <li id="appearance-nav">Appearance</li>
                 <li id="import-export-nav">Import/Export</li>
                 <hr>
-                <li id="about-nav">About ChannelQuarantine</li>
+                <li id="about-nav">About Channel Blocker</li>
                 <li id="faq-nav">FAQ</li>
             </ul>
         </nav>
@@ -81,13 +94,6 @@
                     <input type="range" name="btn-size-slider" id="btn-size-slider" min="100" max="200">
                 </div>
                 <hr>
-                <div class="settings-row disabled" title="Not yet implemented">
-                    <label for="popup-checkbox">Open quick popup when pressing toolbar-button</label>
-                    <label class="switch">
-                        <input value="true" type="checkbox" id="popup-checkbox" disabled>
-                        <span class="slider round"></span>
-                    </label>
-                </div>
             </div>
             <h2>Visibility</h2>
             <div id="visibility-card" class="card">
@@ -102,14 +108,23 @@
                 <div class="settings-row">
                     <label for="block-sponsored-checkbox">Hide sponsored tiles</label>
                     <label class="switch">
-                        <input value="true" type="checkbox" id="block-sponsored-checkbox" checked>
+                        <input value="true" type="checkbox" id="block-sponsored-checkbox">
                         <span class="slider round"></span>
                     </label>
                 </div>
+                <hr>
                 <div class="settings-row">
                     <label for="hide-shorts-checkbox">Hide Shorts shelves</label>
                     <label class="switch">
-                        <input value="true" type="checkbox" id="hide-shorts-checkbox" checked>
+                        <input value="true" type="checkbox" id="hide-shorts-checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <hr>
+                <div class="settings-row">
+                    <label for="hide-rich-shelves-checkbox">Hide news &amp; topic shelves</label>
+                    <label class="switch">
+                        <input value="true" type="checkbox" id="hide-rich-shelves-checkbox">
                         <span class="slider round"></span>
                     </label>
                 </div>
@@ -138,14 +153,14 @@
             </div>
         </div>
         <div id="about-section" class="section">
-            <h2>About ChannelQuarantine</h2>
+            <h2>About Channel Blocker</h2>
             <div id="about-card" class="card">
                 <div>
                     <p>
-                        ChannelQuarantine empowers you to block channels effortlessly with just one
+                        Channel Blocker empowers you to block channels effortlessly with just one
                         click.
                         It also supports regular expressions for unparalleled customization, allowing you to tailor your
-                        YouTube™ experience to your preferences.
+                        YouTubeâ„¢ experience to your preferences.
                         And another thing: Our commitment to privacy means no user information is collected.
                     </p>
                 </div>
@@ -153,16 +168,18 @@
                 <div>
                     <h4>Support Us and Our Work:</h4>
                     <p>
-                        Want to help keep ChannelQuarantine healthy? Feedback, pull requests, and spreading the word all make a difference. Reach out via email if you would like to discuss sponsorship.
+                        Do you like what we do? Do you want to support us and our work? A subscription on Patreon would
+                        help
+                        a lot at developing this tool as well as realizing our future projects.
                     </p>
                 </div>
                 <hr>
                 <div>
-                    <p>Email: Contact us at <a href="mailto:hackman238@shanewilliamscott.com">hackman238@shanewilliamscott.com</a></p>
+                    <p>Email: Contact us at <a href="mailto:yt-cleaner@protonmail.com">yt-cleaner@protonmail.com</a></p>
                     <p>
                         GitHub: Find the source code on
-                        <a href="https://github.com/Hackman238/ChannelQuarantine/">
-                            https://github.com/Hackman238/ChannelQuarantine
+                        <a href="https://github.com/Time-Machine-Development/Channel-Blocker-Manifest-v3/">
+                            https://github.com/Time-Machine-Development/Channel-Blocker-Manifest-v3
                         </a>
                     </p>
                 </div>
@@ -176,8 +193,8 @@
                     <div id="faq-permission-heading" class="settings-row faq-heading">
                         <h3>Why does this add-on require permissions?</h3>
                         <div class="arrow">
-                            <span class="close-arrow">⯅</span>
-                            <span class="open-arrow">⯆</span>
+                            <span class="close-arrow">â¯…</span>
+                            <span class="open-arrow">â¯†</span>
                         </div>
                     </div>
                     <div class="faq-content">
@@ -189,12 +206,12 @@
                                     you
                                     have
                                     blocked
-                                    on YouTube™ and adding the 'x'-button.
-                                    It allows the add-on to interact with and modify your YouTube™ data as needed.
+                                    on YouTubeâ„¢ and adding the 'x'-button.
+                                    It allows the add-on to interact with and modify your YouTubeâ„¢ data as needed.
                                 </p>
                                 <h4>Access to Browser Tabs:</h4>
                                 <p>
-                                    - This permission is essential for keeping track of your active YouTube™ tabs and
+                                    - This permission is essential for keeping track of your active YouTubeâ„¢ tabs and
                                     managing
                                     the
                                     Add-on setting page tab.
@@ -216,8 +233,8 @@
                     <div id="faq-contact-heading" class="settings-row faq-heading">
                         <h3>Encountered a Bug, Have a Feature Idea, or Need Assistance?</h3>
                         <div class="arrow">
-                            <span class="close-arrow">⯅</span>
-                            <span class="open-arrow">⯆</span>
+                            <span class="close-arrow">â¯…</span>
+                            <span class="open-arrow">â¯†</span>
                         </div>
                     </div>
                     <div class="faq-content">
@@ -227,7 +244,7 @@
                                     If you've encountered a bug, have a feature idea, or need assistance with our
                                     product, we're here to help! Please don't hesitate to reach out to us through our
                                     <a
-                                        href="https://github.com/Hackman238/ChannelQuarantine/issues">
+                                        href="https://github.com/Time-Machine-Development/Channel-Blocker-Manifest-v3/issues">
                                         GitHub Issues page
                                     </a>.
                                     <br>
@@ -236,7 +253,7 @@
                                 </p>
                                 <h4>How to Get in Touch:</h4>
                                 <p>For direct assistance, you can also contact us via email at
-                                    <a href=" mailto:hackman238@shanewilliamscott.com">hackman238@shanewilliamscott.com</a>
+                                    <a href=" mailto:yt-cleaner@protonmail.com">yt-cleaner@protonmail.com</a>
                                 </p>
                             </div>
                         </div>
@@ -247,8 +264,8 @@
                     <div id="faq-privacy-heading" class="settings-row faq-heading">
                         <h3>Do you collect any data?</h3>
                         <div class="arrow">
-                            <span class="close-arrow">⯅</span>
-                            <span class="open-arrow">⯆</span>
+                            <span class="close-arrow">â¯…</span>
+                            <span class="open-arrow">â¯†</span>
                         </div>
                     </div>
                     <div class="faq-content">
@@ -274,8 +291,8 @@
                     <div id="faq-troubleshooting-heading" class="settings-row faq-heading">
                         <h3>Troubleshooting Guide: Add-on Not Functioning</h3>
                         <div class="arrow">
-                            <span class="close-arrow">⯅</span>
-                            <span class="open-arrow">⯆</span>
+                            <span class="close-arrow">â¯…</span>
+                            <span class="open-arrow">â¯†</span>
                         </div>
                     </div>
                     <div class="faq-content">
@@ -283,7 +300,7 @@
                             <div class="inner">
                                 <h4>Check for Updates</h4>
                                 <p>
-                                    Ensure that you have the latest version of ChannelQuarantine installed. If not, update
+                                    Ensure that you have the latest version of Channel Blocker installed. If not, update
                                     to
                                     the
                                     newest version for optimal performance.
@@ -300,7 +317,7 @@
                                     If you encounter any issues, even after updating to the latest version, please help
                                     us improve by reporting them. You can submit bug reports through our
                                     <a
-                                        href="https://github.com/Hackman238/ChannelQuarantine/issues">
+                                        href="https://github.com/Time-Machine-Development/Channel-Blocker-Manifest-v3/issues">
                                         GitHub Issues page
                                     </a>.
                                     <br>
@@ -318,10 +335,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-

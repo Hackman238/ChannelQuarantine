@@ -10,6 +10,12 @@
 
 ChannelQuarantine keeps your YouTube experience clean. Block entire channels, individual videos, or specific commenters with one click, or build powerful blocklists using regular expressions. No user data is collected.
 
+### What's new in this fork?
+
+- Hide sponsored tiles across the YouTube homepage and search results.
+- Hide Shorts shelves for a calmer browsing experience.
+- Hide news and topic (rich) shelves when you want a trimmed-down feed.
+
 This project is maintained by [Hackman238](https://github.com/Hackman238) and is based on the original Channel Blocker by Time Machine Development. The project continues to be distributed under the BSD 3-Clause licence.
 
 ---
@@ -56,4 +62,3 @@ The build outputs will be written to:
 ### Contributing & Support
 
 Issues and pull requests are welcome at [github.com/Hackman238/ChannelQuarantine](https://github.com/Hackman238/ChannelQuarantine). If you run into problems, please open an issue with steps to reproduce and any relevant console output.
-

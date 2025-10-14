@@ -5,10 +5,10 @@ import { SettingsStorageObject } from "./interfaces/storage.js";
 const modeDropdown = document.getElementById("mode-dropdown") as HTMLSelectElement;
 const btnColorInput = document.getElementById("block-btn-color-picker") as HTMLInputElement;
 const btnSizeSlider = document.getElementById("btn-size-slider") as HTMLInputElement;
-const popupCheckbox = document.getElementById("popup-checkbox") as HTMLInputElement;
 const showBtnCheckbox = document.getElementById("show-btn-checkbox") as HTMLInputElement;
-const blockSponsoredCheckbox = document.getElementById("block-sponsored-checkbox") as HTMLInputElement;
-const hideShortsCheckbox = document.getElementById("hide-shorts-checkbox") as HTMLInputElement;
+const blockSponsoredCheckbox = document.getElementById("block-sponsored-checkbox") as HTMLInputElement | null;
+const hideShortsCheckbox = document.getElementById("hide-shorts-checkbox") as HTMLInputElement | null;
+const hideRichShelvesCheckbox = document.getElementById("hide-rich-shelves-checkbox") as HTMLInputElement | null;
 const animationSpeedSlider = document.getElementById("animation-speed-slider") as HTMLInputElement;
 const resetBtn = document.getElementById("reset-appearance-btn") as HTMLButtonElement;
 
@@ -17,13 +17,13 @@ let defaultStorage: SettingsStorageObject = {
     settings: {
         design: SettingsDesign.DETECT,
         advancedView: false,
-        openPopup: false,
         buttonVisible: true,
         buttonColor: "#FF3333",
         buttonSize: 142,
         animationSpeed: 200,
         blockSponsoredTiles: true,
         hideShortsShelves: true,
+        hideRichShelves: true,
     },
 };
 let settings = { ...defaultStorage.settings };
@@ -62,10 +62,10 @@ function updateUI() {
     updateColorScheme();
     updateBtnColor();
     updateBtnSize();
-    updatePopup();
     updateShowBtn();
     updateBlockSponsored();
     updateHideShorts();
+    updateHideRichShelves();
     updateAnimationSpeed();
 }
 
@@ -83,22 +83,28 @@ function updateBtnSize() {
     btnSizeSlider.value = `${settings.buttonSize}`;
 }
 
-function updatePopup() {
-    popupCheckbox.checked = settings.openPopup;
-}
 
 function updateShowBtn() {
     showBtnCheckbox.checked = settings.buttonVisible;
 }
 
 function updateBlockSponsored() {
-    blockSponsoredCheckbox.checked = settings.blockSponsoredTiles;
+    if (blockSponsoredCheckbox) {
+        blockSponsoredCheckbox.checked = settings.blockSponsoredTiles;
+    }
 }
 
 function updateHideShorts() {
-    hideShortsCheckbox.checked = settings.hideShortsShelves;
+    if (hideShortsCheckbox) {
+        hideShortsCheckbox.checked = settings.hideShortsShelves;
+    }
 }
 
+function updateHideRichShelves() {
+    if (hideRichShelvesCheckbox) {
+        hideRichShelvesCheckbox.checked = settings.hideRichShelves;
+    }
+}
 function updateAnimationSpeed() {
     animationSpeedSlider.value = `${settings.animationSpeed}`;
 }
@@ -124,11 +130,6 @@ export function initAppearanceUI() {
         sendSettingChangedMessage();
     });
 
-    popupCheckbox.addEventListener("change", () => {
-        settings.openPopup = popupCheckbox.checked;
-        storageSet({ settings });
-        updatePopup();
-    });
 
     showBtnCheckbox.addEventListener("change", () => {
         settings.buttonVisible = showBtnCheckbox.checked;
@@ -137,17 +138,26 @@ export function initAppearanceUI() {
         sendSettingChangedMessage();
     });
 
-    blockSponsoredCheckbox.addEventListener("change", () => {
+    blockSponsoredCheckbox?.addEventListener("change", () => {
+        if (!blockSponsoredCheckbox) return;
         settings.blockSponsoredTiles = blockSponsoredCheckbox.checked;
         storageSet({ settings });
         updateBlockSponsored();
         sendSettingChangedMessage();
     });
 
-    hideShortsCheckbox.addEventListener("change", () => {
+    hideShortsCheckbox?.addEventListener("change", () => {
+        if (!hideShortsCheckbox) return;
         settings.hideShortsShelves = hideShortsCheckbox.checked;
         storageSet({ settings });
         updateHideShorts();
+        sendSettingChangedMessage();
+    });
+
+    hideRichShelvesCheckbox?.addEventListener("change", () => {
+        settings.hideRichShelves = hideRichShelvesCheckbox.checked;
+        storageSet({ settings });
+        updateHideRichShelves();
         sendSettingChangedMessage();
     });
 
@@ -178,7 +188,11 @@ function sendSettingChangedMessage() {
             animationSpeed: settings.animationSpeed,
             blockSponsoredTiles: settings.blockSponsoredTiles,
             hideShortsShelves: settings.hideShortsShelves,
+            hideRichShelves: settings.hideRichShelves,
         },
     };
     chrome.runtime.sendMessage(message);
 }
+
+
+

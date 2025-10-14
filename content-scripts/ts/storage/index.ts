@@ -5,8 +5,12 @@ const cqStorageWindow = window as typeof window & {
     cqApplyShortsBlocking?: (root?: ParentNode) => void;
     cqClearShortsBlocking?: (root?: ParentNode) => void;
     cqHideShortsShelves?: boolean;
+    cqApplyRichShelvesBlocking?: (root?: ParentNode) => void;
+    cqClearRichShelvesBlocking?: (root?: ParentNode) => void;
+    cqHideRichShelves?: boolean;
     scheduleObserverUpdate?: () => void;
     updateRulesCache?: (snapshot: RulesSnapshot) => void;
+
 };
 
 type RuleCache = {
@@ -171,6 +175,7 @@ async function blockUserChannel(userChannelName: string) {
         animationSpeed: number;
         blockSponsoredTiles: boolean;
         hideShortsShelves: boolean;
+        hideRichShelves: boolean;
     };
 
     buttonVisible = response.buttonVisible;
@@ -222,4 +227,5 @@ async function sendMessage(message: Message) {
         });
     });
 }
+
 

@@ -40,35 +40,58 @@ function makeChunk(type, data) {
   return Buffer.concat([len, typeBuf, data, crcBuf]);
 }
 
+function pointInTriangle(px, py, ax, ay, bx, by, cx, cy) {
+    const v0x = cx - ax;
+    const v0y = cy - ay;
+    const v1x = bx - ax;
+    const v1y = by - ay;
+    const v2x = px - ax;
+    const v2y = py - ay;
+
+    const dot00 = v0x * v0x + v0y * v0y;
+    const dot01 = v0x * v1x + v0y * v1y;
+    const dot02 = v0x * v2x + v0y * v2y;
+    const dot11 = v1x * v1x + v1y * v1y;
+    const dot12 = v1x * v2x + v1y * v2y;
+
+    const denom = dot00 * dot11 - dot01 * dot01;
+    if (denom === 0) return false;
+    const inv = 1 / denom;
+    const u = (dot11 * dot02 - dot01 * dot12) * inv;
+    const v = (dot00 * dot12 - dot01 * dot02) * inv;
+    return u >= 0 && v >= 0 && u + v <= 1;
+}
+
 function generateIcon(size, outPath) {
-  const rowSize = size * 4 + 1;
-  const raw = Buffer.alloc(rowSize * size);
-  const center = (size - 1) / 2;
-  const outerRadius = size * 0.48;
-  const borderThickness = size * 0.08;
-  const innerRadius = outerRadius - borderThickness;
-  const crossThickness = size * 0.12;
+    const rowSize = size * 4 + 1;
+    const raw = Buffer.alloc(rowSize * size);
+    const center = (size - 1) / 2;
+    const outerRadius = size * 0.48;
+    const borderThickness = size * 0.08;
+    const innerRadius = outerRadius - borderThickness;
+    const playLeftX = center - size * 0.18;
+    const playTopY = center - size * 0.24;
+    const playBottomY = center + size * 0.24;
+    const playRightX = center + size * 0.30;
 
-  for (let y = 0; y < size; y++) {
-    const rowOffset = y * rowSize;
-    raw[rowOffset] = 0;
-    for (let x = 0; x < size; x++) {
-      const dx = x - center;
-      const dy = y - center;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const diag1 = Math.abs(y - x);
-      const diag2 = Math.abs((size - 1 - y) - x);
-      let draw = false;
+    for (let y = 0; y < size; y++) {
+        const rowOffset = y * rowSize;
+        raw[rowOffset] = 0;
+        for (let x = 0; x < size; x++) {
+            const dx = x - center;
+            const dy = y - center;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            let draw = false;
 
-      if (dist >= innerRadius && dist <= outerRadius) {
-        draw = true;
-      } else if ((diag1 <= crossThickness || diag2 <= crossThickness) && dist <= outerRadius) {
-        draw = true;
-      }
+            if (dist >= innerRadius && dist <= outerRadius) {
+                draw = true;
+            } else if (pointInTriangle(x, y, playLeftX, playTopY, playLeftX, playBottomY, playRightX, center)) {
+                draw = true;
+            }
 
-      const offset = rowOffset + 1 + x * 4;
-      if (draw) {
-        raw[offset] = GREEN[0];
+            const offset = rowOffset + 1 + x * 4;
+            if (draw) {
+                raw[offset] = GREEN[0];
         raw[offset + 1] = GREEN[1];
         raw[offset + 2] = GREEN[2];
         raw[offset + 3] = GREEN[3];

@@ -30,6 +30,7 @@ let settings = {
     animationSpeed: 200,
     blockSponsoredTiles: true,
     hideShortsShelves: true,
+    hideRichShelves: true,
 };
 
 let blockedChannelsSet = new Set<string>();
@@ -172,6 +173,10 @@ export async function loadDataFromStorage() {
         needsSettingsUpdate = true;
     }
     settings.hideShortsShelves = storedSettings.hideShortsShelves ?? false;
+    if (storedSettings.hideRichShelves === undefined) {
+        needsSettingsUpdate = true;
+    }
+    settings.hideRichShelves = storedSettings.hideRichShelves ?? false;
     if (needsSettingsUpdate) {
         await storageSet({ settings });
     }
@@ -331,6 +336,7 @@ export function handleRequestSettings(message: RequestSettingsMessage): {
     animationSpeed: number;
     blockSponsoredTiles: boolean;
     hideShortsShelves: boolean;
+    hideRichShelves: boolean;
 } {
     return settings;
 }
@@ -482,7 +488,6 @@ async function convertOldStorage() {
             design: clamp(0, 2, storageObject.settings_ui[0] + 1),
             // No longer in use
             advancedView: storageObject.settings_ui[1],
-            openPopup: storageObject.settings_ui[2],
             buttonVisible: storageObject.content_ui[0],
             buttonColor: storageObject.content_ui[1],
             // The old default was 106, but in the new implementation this is pretty small so add 36 to adjust.
@@ -491,6 +496,7 @@ async function convertOldStorage() {
             animationSpeed: clamp(100, 200, storageObject.content_ui[3]),
             blockSponsoredTiles: false,
             hideShortsShelves: false,
+            hideRichShelves: false,
         },
     };
 

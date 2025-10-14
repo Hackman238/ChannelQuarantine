@@ -57,6 +57,7 @@ export interface SettingsChangedMessage extends Message {
         animationSpeed: number;
         blockSponsoredTiles: boolean;
         hideShortsShelves: boolean;
+        hideRichShelves: boolean;
     };
 }
 

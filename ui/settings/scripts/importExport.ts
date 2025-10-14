@@ -83,13 +83,13 @@ export function initImportExport() {
             settings: {
                 design: SettingsDesign.DETECT,
                 advancedView: false,
-                openPopup: false,
                 buttonVisible: true,
             buttonColor: "#717171",
             buttonSize: 142,
             animationSpeed: 200,
             blockSponsoredTiles: false,
             hideShortsShelves: false,
+            hideRichShelves: true,
         },
             blockedChannels: [],
             excludedChannels: [],
@@ -121,13 +121,13 @@ function loadOldFormat(oldStorageObject: OldStorageObject) {
         settings: {
             design: SettingsDesign.DETECT,
             advancedView: false,
-            openPopup: false,
-            buttonVisible: true,
-            buttonColor: "#717171",
-            buttonSize: 142,
-            animationSpeed: 200,
-            blockSponsoredTiles: false,
-            hideShortsShelves: false,
+                buttonVisible: true,
+                buttonColor: "#717171",
+                buttonSize: 142,
+                animationSpeed: 200,
+                blockSponsoredTiles: false,
+                hideShortsShelves: false,
+                hideRichShelves: true,
         },
         blockedChannels: [],
         excludedChannels: [],
@@ -179,9 +179,6 @@ function loadOldFormat(oldStorageObject: OldStorageObject) {
             // No longer in use
             combinedStorageObject.settings.advancedView = oldStorageObject.settings_ui[1];
         }
-        if (oldStorageObject?.settings_ui?.[2] !== undefined) {
-            combinedStorageObject.settings.openPopup = oldStorageObject.settings_ui[2];
-        }
         if (oldStorageObject?.content_ui?.[0] !== undefined) {
             combinedStorageObject.settings.buttonVisible = oldStorageObject.content_ui[0];
         }
@@ -220,13 +217,13 @@ function loadNewFormat(loadedStorageObject: CombinedStorageObject) {
         settings: {
             design: SettingsDesign.DETECT,
             advancedView: false,
-            openPopup: false,
             buttonVisible: true,
             buttonColor: "#717171",
             buttonSize: 142,
             animationSpeed: 200,
             blockSponsoredTiles: false,
             hideShortsShelves: false,
+            hideRichShelves: true,
         },
         blockedChannels: [],
         excludedChannels: [],
@@ -311,5 +308,7 @@ function sendStorageChangeMsg() {
     chrome.runtime.sendMessage(message);
     console.log("sendStorageChangeMsg");
 }
+
+
 
 

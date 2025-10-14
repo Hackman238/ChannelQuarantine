@@ -40,13 +40,13 @@ export interface SettingsStorageObject {
     settings: {
         design: SettingsDesign;
         advancedView: boolean;
-        openPopup: boolean;
         buttonVisible: boolean;
         buttonColor: string;
         buttonSize: number;
         animationSpeed: number;
         blockSponsoredTiles: boolean;
         hideShortsShelves: boolean;
+        hideRichShelves: boolean;
     };
 }
 

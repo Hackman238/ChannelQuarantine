@@ -5,6 +5,9 @@ const cqWindow = window as typeof window & {
     cqHideShortsShelves?: boolean;
     cqApplyShortsBlocking?: (root?: ParentNode) => void;
     cqClearShortsBlocking?: (root?: ParentNode) => void;
+    cqHideRichShelves?: boolean;
+    cqApplyRichShelvesBlocking?: (root?: ParentNode) => void;
+    cqClearRichShelvesBlocking?: (root?: ParentNode) => void;
     updateRulesCache?: (snapshot: RulesSnapshot) => void;
     scheduleObserverUpdate?: () => void;
 };
@@ -26,6 +29,14 @@ function getHideShortsShelves(): boolean {
 
 function setHideShortsShelves(value: boolean) {
     cqWindow.cqHideShortsShelves = value;
+}
+
+function getHideRichShelves(): boolean {
+    return cqWindow.cqHideRichShelves === true;
+}
+
+function setHideRichShelves(value: boolean) {
+    cqWindow.cqHideRichShelves = value;
 }
 
 let observerUpdateScheduled = false;
@@ -94,6 +105,16 @@ function handleContextChange(context: YTContext) {
         applyShortsBlocking(document);
     } else {
         clearShortsBlocking(document);
+    }
+    if (getHideRichShelves()) {
+        applyRichShelvesBlocking(document);
+    } else {
+        clearRichShelvesBlocking(document);
+    }
+    if (getHideRichShelves()) {
+        applyRichShelvesBlocking(document);
+    } else {
+        clearRichShelvesBlocking(document);
     }
 }
 
@@ -390,6 +411,9 @@ function createSearchObserver(): Observer[] {
 const SHORTS_SHELF_SELECTOR = "ytd-rich-shelf-renderer[is-shorts], ytd-reel-shelf-renderer";
 const SHORTS_DATA_ATTRIBUTE = "data-cq-shorts-hidden";
 const processedShortsShelves = new WeakSet<Element>();
+const RICH_SHELF_SELECTOR = "ytd-rich-shelf-renderer:not([is-shorts])";
+const RICH_SHELF_DATA_ATTRIBUTE = "data-cq-rich-shelf-blocked";
+const processedRichShelves = new WeakSet<Element>();
 
 const SPONSORED_SCAN_SELECTOR = "div.yt-lockup-view-model, ytd-ad-slot-renderer, ytd-promoted-sparkles-web-renderer, ytd-promoted-sparkles-text-search-renderer, ytd-promoted-video-renderer, ytd-search-pyv-renderer, ytd-display-ad-renderer, ytd-in-feed-ad-layout-renderer, ytd-rich-grid-promoted-item-renderer, ytd-rich-item-renderer";
 const processedSponsoredNodes = new WeakSet<Element>();
@@ -518,6 +542,69 @@ function clearShortsBlocking(root: ParentNode = document) {
     });
 }
 
+function applyRichShelvesBlocking(root: ParentNode = document) {
+    if (!getHideRichShelves()) return;
+
+    const candidates = new Set<Element>();
+
+    const collectCandidate = (element: Element) => {
+        if (!element.isConnected) {
+            processedRichShelves.delete(element);
+            return;
+        }
+        if (element.matches(RICH_SHELF_SELECTOR) || element.getAttribute(RICH_SHELF_DATA_ATTRIBUTE) === "true") {
+            candidates.add(element);
+        }
+    };
+
+    if (root instanceof Element) {
+        collectCandidate(root);
+    }
+
+    if ("querySelectorAll" in root && typeof (root as Document | Element).querySelectorAll === "function") {
+        const selector = `${RICH_SHELF_SELECTOR}, [${RICH_SHELF_DATA_ATTRIBUTE}="true"]`;
+        const nodeList = (root as Document | Element).querySelectorAll(selector);
+        for (let index = 0; index < nodeList.length; index++) {
+            collectCandidate(nodeList[index] as Element);
+        }
+    }
+
+    candidates.forEach((shelf) => {
+        if (shelf.getAttribute(RICH_SHELF_DATA_ATTRIBUTE) !== "true") {
+            shelf.setAttribute(RICH_SHELF_DATA_ATTRIBUTE, "true");
+        }
+        shelf.classList.add("blocked");
+        processedRichShelves.add(shelf);
+    });
+}
+
+function clearRichShelvesBlocking(root: ParentNode = document) {
+    const toClear = new Set<Element>();
+
+    const collectMarked = (element: Element) => {
+        if (element.getAttribute(RICH_SHELF_DATA_ATTRIBUTE) === "true") {
+            toClear.add(element);
+        }
+    };
+
+    if (root instanceof Element) {
+        collectMarked(root);
+    }
+
+    if ("querySelectorAll" in root && typeof (root as Document | Element).querySelectorAll === "function") {
+        const nodeList = (root as Document | Element).querySelectorAll(`[${RICH_SHELF_DATA_ATTRIBUTE}="true"]`);
+        for (let index = 0; index < nodeList.length; index++) {
+            collectMarked(nodeList[index] as Element);
+        }
+    }
+
+    toClear.forEach((shelf) => {
+        shelf.removeAttribute(RICH_SHELF_DATA_ATTRIBUTE);
+        shelf.classList.remove("blocked");
+        processedRichShelves.delete(shelf);
+    });
+}
+
 cqWindow.cqApplySponsoredBlocking = applySponsoredBlocking;
 cqWindow.cqClearSponsoredBlocking = clearSponsoredBlocking;
 cqWindow.cqApplyShortsBlocking = applyShortsBlocking;
@@ -554,11 +641,12 @@ let animationSpeed: number = 200;
  */
 function updateSettings(message: SettingsChangedMessage) {
     buttonVisible = message.content.buttonVisible;
-   buttonColor = message.content.buttonColor;
-   buttonSize = message.content.buttonSize;
-   animationSpeed = message.content.animationSpeed;
-   setBlockSponsoredTiles(message.content.blockSponsoredTiles);
+    buttonColor = message.content.buttonColor;
+    buttonSize = message.content.buttonSize;
+    animationSpeed = message.content.animationSpeed;
+    setBlockSponsoredTiles(message.content.blockSponsoredTiles);
     setHideShortsShelves(message.content.hideShortsShelves);
+    setHideRichShelves(message.content.hideRichShelves);
 
     updateBlockBtnCSS();
     if (getBlockSponsoredTiles()) {
@@ -570,6 +658,11 @@ function updateSettings(message: SettingsChangedMessage) {
         applyShortsBlocking(document);
     } else {
         clearShortsBlocking(document);
+    }
+    if (getHideRichShelves()) {
+        applyRichShelvesBlocking(document);
+    } else {
+        clearRichShelvesBlocking(document);
     }
     scheduleObserverUpdate();
 }
@@ -648,3 +741,14 @@ chrome.runtime.onMessage.addListener((message: Message, sender: chrome.runtime.M
 
 
 scheduleObserverUpdate();
+
+
+
+
+
+
+
+
+
+
+
