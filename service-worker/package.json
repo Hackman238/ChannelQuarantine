@@ -1,0 +1,25 @@
+{
+    "name": "channel-quarantine-service-worker",
+    "version": "1.0.0",
+    "description": "Service worker bundle for the ChannelQuarantine web extension.",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsc --noEmit && esbuild ./ts/index.ts --bundle --platform=browser --format=iife --target=es2017 --tsconfig=tsconfig.json --outfile=../dist/service-worker/index.js --log-level=warning"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Hackman238/ChannelQuarantine.git"
+    },
+    "author": "Hackman238 <hackman238@shanewilliamscott.com>",
+    "license": "BSD-3-Clause",
+    "bugs": {
+        "url": "https://github.com/Hackman238/ChannelQuarantine/issues"
+    },
+    "homepage": "https://github.com/Hackman238/ChannelQuarantine#readme",
+    "devDependencies": {
+        "@types/chrome": "^0.0.254",
+        "chrome-types": "^0.1.246",
+        "esbuild": "^0.23.0",
+        "typescript": "^5.3.3"
+    }
+}

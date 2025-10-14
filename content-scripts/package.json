@@ -1,0 +1,31 @@
+{
+    "name": "channel-quarantine",
+    "version": "1.0.0",
+    "description": "ChannelQuarantine content scripts for quarantining YouTube channels, videos, and comments.",
+    "main": "index.js",
+    "scripts": {
+        "dev": "tsc -w",
+        "build": "tsc"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Hackman238/ChannelQuarantine.git"
+    },
+    "keywords": [
+        "channel",
+        "quarantine",
+        "youtube",
+        "browser-extension"
+    ],
+    "author": "Hackman238 <hackman238@shanewilliamscott.com>",
+    "license": "BSD-3-Clause",
+    "bugs": {
+        "url": "https://github.com/Hackman238/ChannelQuarantine/issues"
+    },
+    "homepage": "https://github.com/Hackman238/ChannelQuarantine#readme",
+    "devDependencies": {
+        "@types/chrome": "^0.0.254",
+        "chrome-types": "^0.1.246",
+        "typescript": "^5.3.3"
+    }
+}

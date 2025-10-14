@@ -1,0 +1,26 @@
+{
+    "name": "channel-quarantine-ui",
+    "version": "1.0.0",
+    "description": "User interface assets for the ChannelQuarantine extension.",
+    "main": "index.js",
+    "scripts": {
+        "build-sass": "node-sass --include-path sass ./settings/style --output ../dist/ui/settings/style",
+        "build": "tsc && npm run build-sass"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Hackman238/ChannelQuarantine.git"
+    },
+    "author": "Hackman238 <hackman238@shanewilliamscott.com>",
+    "license": "BSD-3-Clause",
+    "bugs": {
+        "url": "https://github.com/Hackman238/ChannelQuarantine/issues"
+    },
+    "homepage": "https://github.com/Hackman238/ChannelQuarantine#readme",
+    "devDependencies": {
+        "@types/chrome": "^0.0.254",
+        "chrome-types": "^0.1.246",
+        "node-sass": "^9.0.0",
+        "typescript": "^5.3.3"
+    }
+}
