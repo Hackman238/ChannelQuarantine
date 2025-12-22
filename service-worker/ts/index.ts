@@ -13,7 +13,7 @@ import {
     getRulesSnapshot,
 } from "./storage.js";
 
-const browserAction = chrome.action;
+const browserAction = chrome.browserAction;
 
 console.log("ChannelQuarantine background initialized");
 
@@ -86,5 +86,4 @@ async function openConfig() {
         });
     }
 }
-
 

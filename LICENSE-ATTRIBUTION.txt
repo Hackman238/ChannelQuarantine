@@ -28,5 +28,5 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ------------------------------------------------------------------------
 Additional notice (2025):
 ChannelQuarantine is a maintained fork of Channel Blocker stewarded by Hackman238
-(hackman238@shanewilliamscott.com). All modifications remain under the BSD 3-Clause
+(hackman238@gmail.com). All modifications remain under the BSD 3-Clause
 license and retain the original copyright notice.

@@ -4,7 +4,7 @@
     "description": "User interface assets for the ChannelQuarantine extension.",
     "main": "index.js",
     "scripts": {
-        "build-sass": "node-sass --include-path sass ./settings/style --output ../dist/ui/settings/style",
+        "build-sass": "node-sass --include-path sass ./settings/style --output ../dist-firefox/ui/settings/style",
         "build": "tsc && npm run build-sass"
     },
     "repository": {

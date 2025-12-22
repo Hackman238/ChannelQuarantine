@@ -4,7 +4,7 @@
     "description": "Service worker bundle for the ChannelQuarantine web extension.",
     "main": "index.js",
     "scripts": {
-        "build": "tsc --noEmit && esbuild ./ts/index.ts --bundle --platform=browser --format=iife --target=es2017 --tsconfig=tsconfig.json --outfile=../dist/service-worker/index.js --log-level=warning"
+        "build": "tsc --noEmit && esbuild ./ts/index.ts --bundle --platform=browser --format=iife --target=es2017 --tsconfig=tsconfig.json --outfile=../dist-firefox/service-worker/index.js --log-level=warning"
     },
     "repository": {
         "type": "git",

@@ -1,16 +1,15 @@
 #!/bin/bash
 
-manifest_file="./manifest.json"
-manifest_file_firefox="./manifest.json.firefox"
+manifest_file="./manifest.json.firefox"
+license_file="./LICENSE"
+license_attr_file="./LICENSE-ATTRIBUTION.txt"
 images_folder="./images"
 ui_folder="./ui"
 service_worker_folder="./service-worker"
-destination_folder="./dist"
-destination_folder_firefox="./dist-firefox"
+destination_folder="./dist-firefox"
 
-# Delete the existing dist folder
+# Delete the existing dist-firefox folder
 rm -rf "$destination_folder"
-rm -rf "$destination_folder_firefox"
 
 # Run npm run build in content-scripts folder
 cd content-scripts
@@ -34,7 +33,9 @@ mkdir -p "$destination_folder/ui/settings"
 mkdir -p "$destination_folder/ui/popup"
 
 # Copy the contents of the images folder
-cp "$manifest_file" "$destination_folder"
+cp "$manifest_file" "$destination_folder/manifest.json"
+cp "$license_file" "$destination_folder/LICENSE"
+cp "$license_attr_file" "$destination_folder/LICENSE-ATTRIBUTION.txt"
 cp -r "$images_folder"/* "$destination_folder/images"
 cp "$service_worker_folder/index.html" "$destination_folder/service-worker/index.html"
 # Copy HTML files from the ui folder and its subfolders
@@ -43,20 +44,10 @@ cp "$service_worker_folder/index.html" "$destination_folder/service-worker/index
 cp -v "$ui_folder"/settings/*.html "$destination_folder/ui/settings/"
 cp -v "$ui_folder"/popup/*.html "$destination_folder/ui/popup/"
 
-echo "Files copied to ./dist folder."
+echo "Files copied to ./dist-firefox folder."
 
 mkdir -p ./bin
 
 cd "$destination_folder"
-
-zip -r -q -FS ../bin/ytc.zip *
-
-cd ..
-
-cp -r "$destination_folder" "$destination_folder_firefox"
-
-cp "$manifest_file_firefox" "$destination_folder_firefox/manifest.json"
-
-cd "$destination_folder_firefox"
 
 zip -r -q -FS ../bin/ytc.xpi *
