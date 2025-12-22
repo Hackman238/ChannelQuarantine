@@ -45,7 +45,7 @@ jobs:
       - name: Read manifest version
         id: manifest
         run: |
-          VERSION=$(node -p "require('./manifest.json.firefox').version")
+          VERSION=$(node -e "const fs=require('fs');const data=JSON.parse(fs.readFileSync('manifest.json.firefox','utf8'));process.stdout.write(data.version);")
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub release
